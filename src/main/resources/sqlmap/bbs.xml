@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bbs">
+    <insert id="Insert" parameterType="daygen.model.physical.BbsModel" useGeneratedKeys="true" keyProperty="bbsPid">
+        INSERT INTO BbsInfo
+        (BbsPid
+        ,ClturTypeCode
+        ,ClTypeCode
+        ,Sj
+        ,CreatDt
+        ,Rdcnt
+        ,Cn
+        ,ThumbFilePid
+        ,BbscttExpsrYn
+        ,DeleteYn)
+        VALUES
+        (#{bbsPid}
+        ,#{clturTypeCode}
+        ,#{clTypeCode}
+        ,#{sj}
+        ,NOW()
+        ,#{rdcnt}
+        ,#{cn}
+        ,#{thumbFilePid}
+        ,#{bbscttExpsrYn}
+        ,#{deleteYn})
+    </insert>
+
+    <update id="Modify" parameterType="daygen.model.physical.BbsModel">
+        UPDATE  BbsInfo
+        SET     ClTypeCode = #{clTypeCode},
+                Sj = #{sj},
+                Cn = #{cn},
+                ThumbFilePid = ${thumbFilePid},
+                BbscttExpsrYn = #{bbscttExpsrYn}
+        WHERE   BbsPid = ${bbsPid}
+    </update>
+
+    <update id="Remove" parameterType="int">
+        UPDATE  BbsInfo
+        SET     DeleteYn = 'Y'
+        WHERE   BbsPid = #{bbsPid}
+    </update>
+
+    <insert id="InsertBbsAtchmnflMapng" parameterType="Map">
+        INSERT  INTO    BbsAtchmnflMapng
+        (BbsPid
+        ,FilePid)
+        VALUES
+        (${bbsPid}
+        ,${filePid})
+    </insert>
+
+    <update id="RemoveBbsAtchmnflMapng" parameterType="daygen.model.physical.BbsModel">
+        DELETE  FROM    BbsAtchmnflMapng
+        WHERE   BbsPid = ${bbsPid}
+    </update>
+
+    <select id="GetBbs" resultType="daygen.model.physical.BbsModel" parameterType="daygen.model.physical.BbsModel">
+        SELECT  B.BbsPid,
+                B.ClturTypeCode,
+                B.ClTypeCode,
+                B.Sj,
+                B.CreatDt,
+                B.Rdcnt,
+                B.Cn,
+                B.ThumbFilePid,
+                F.RealName,
+                F.VirtualName,
+                F.Category,
+                F.Height,
+                F.Width,
+                B.BbscttExpsrYn,
+                (SELECT GROUP_CONCAT(T.FilePid SEPARATOR ',') FROM BbsAtchmnflMapng M, FileInfo T WHERE M.BbsPid = B.BbsPid AND M.FilePid = T.FilePid) AS FilePids
+        FROM    BbsInfo B
+        LEFT  JOIN  FileInfo F
+        ON      B.ThumbFilePid = F.FilePid
+        WHERE   B.BbsPid = ${bbsPid}
+        AND     B.DeleteYn = 'N'
+    </select>
+
+    <select id="GetBbsListCount" resultType="int" parameterType="daygen.model.Logical.BbsSearchModel">
+        SELECT  COUNT(*)
+        FROM    BbsInfo
+        WHERE   DeleteYn = 'N'
+        AND     ClturTypeCode = #{clturTypeCode}
+        <if test="bbscttExpsrYn != null and bbscttExpsrYn != ''">
+	    AND     BbscttExpsrYn = #{bbscttExpsrYn}
+	    </if>
+        <if test="clTypeCode != null and clTypeCode != ''">
+        AND     ClTypeCode = #{clTypeCode}
+        </if>
+        <choose>
+            <when test='searchType == ""'>
+        AND		(Sj LIKE CONCAT('%', #{searchText}, '%') OR Cn LIKE CONCAT('%', #{searchText}, '%'))
+            </when>
+            <when test='searchType == "S"'>
+        AND		Sj LIKE CONCAT('%', #{searchText}, '%')
+            </when>
+            <when test='searchType == "C"'>
+        AND		Cn LIKE CONCAT('%', #{searchText}, '%')
+            </when>
+        </choose>
+    </select>
+
+    <select id="GetBbsList" resultType="daygen.model.physical.BbsModel" parameterType="daygen.model.Logical.BbsSearchModel">
+        SELECT  @RowCount := @RowCount + 1 RowNum,
+                B.BbsPid,
+                B.ClTypeCode,
+                B.Sj,
+                B.Cn,
+                B.CreatDt,
+                B.Rdcnt,
+                B.ThumbFilePid,
+                F.VirtualName,
+                F.Category
+        FROM    BbsInfo B, FileInfo F, (SELECT @RowCount := ${offset}) temp
+        WHERE   B.ThumbFilePid = F.FilePid
+        AND     B.DeleteYn = 'N'
+        AND     B.ClturTypeCode = #{clturTypeCode}
+        <if test="bbscttExpsrYn != null and bbscttExpsrYn != ''">
+	    AND     B.BbscttExpsrYn = #{bbscttExpsrYn}
+	    </if>
+        <if test="clTypeCode != null and clTypeCode != ''">
+        AND     ClTypeCode = #{clTypeCode}
+        </if>
+        <choose>
+            <when test='searchType == ""'>
+        AND 	(B.Sj LIKE CONCAT('%', #{searchText}, '%') OR B.Cn LIKE CONCAT('%', #{searchText}, '%'))
+            </when>
+            <when test='searchType == "S"'>
+       	AND		B.Sj LIKE CONCAT('%', #{searchText}, '%')
+            </when>
+            <when test='searchType == "C"'>
+        AND		B.Cn LIKE CONCAT('%', #{searchText}, '%')
+            </when>
+        </choose>
+        ORDER	BY	B.CreatDt DESC
+        LIMIT	${offset}, ${limit}
+    </select>
+
+    <update id="AddRdcnt" parameterType="daygen.model.physical.BbsModel">
+        UPDATE  BbsInfo
+        SET     Rdcnt = Rdcnt + 1
+        WHERE   BbsPid = ${bbsPid}
+        AND     DeleteYn = 'N'
+    </update>
+
+    <select id="CheckMScrinExpsrYnCount" resultType="int" parameterType="String">
+        SELECT  COUNT(*)
+        FROM    BbsInfo
+        WHERE   MScrinExpsrYn = 'Y'
+        AND     DeleteYn = 'N'
+        AND     ClturTypeCode = #{clturTypeCode}
+    </select>
+
+    <select id="CheckMScrinExpsrYn" resultType="int" parameterType="int">
+        <choose>
+            <when test='value >= 10'>
+                SELECT 1
+            </when>
+            <otherwise>
+                SELECT 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="GetPrevBbs" resultType="daygen.model.physical.BbsModel" parameterType="daygen.model.Logical.BbsSearchModel">
+        SELECT  *
+        FROM    BbsInfo
+        WHERE   ClturTypeCode = #{clturTypeCode}
+        <if test="clTypeCode != null and clTypeCode != ''">
+        AND     ClTypeCode = #{clTypeCode}
+        </if>
+        AND     DeleteYn = 'N'
+        AND     BbsPid > ${bbsPid}
+        ORDER   BY BbsPid ASC
+        LIMIT   1
+    </select>
+
+    <select id="GetNextBbs" resultType="daygen.model.physical.BbsModel" parameterType="daygen.model.Logical.BbsSearchModel">
+        SELECT  *
+        FROM    BbsInfo
+        WHERE   ClturTypeCode = #{clturTypeCode}
+        <if test="clTypeCode != null and clTypeCode != ''">
+        AND     ClTypeCode = #{clTypeCode}
+        </if>
+        AND     DeleteYn = 'N'
+        AND     BbsPid &lt; ${bbsPid}
+        ORDER   BY BbsPid DESC
+        LIMIT   1
+    </select>
+</mapper>

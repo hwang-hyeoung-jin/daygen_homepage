@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="web_ko" template="/WEB-INF/tiles/layout/web/ko/master.jsp">
+		<put-attribute name="content" value="/WEB-INF/tiles/layout/web/ko/content.jsp" />
+	</definition>
+
+	<definition name=".web_ko_*/*" extends="web_ko">
+		<put-attribute name="content" value="/WEB-INF/jsp/web/ko/{1}/{2}.jsp" />
+	</definition>
+</tiles-definitions>

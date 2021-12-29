@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="parmacy">
+    <insert id="Insert" parameterType="daygen.model.physical.ParmacyModel">
+        INSERT INTO ParmacyInfo
+        ( Zip
+        , Adres01
+        , Adres02
+        , ParmacyNm
+        , Telno
+        , Rdcnt
+        , ExpsrYn
+        , DeleteYn
+        , CreatDt
+        , Ctprvn
+        , Signgu
+        , La
+        , Lo)
+        VALUES ( #{zip}
+               , #{adres01}
+               , #{adres02}
+               , #{parmacyNm}
+               , #{telno}
+               , #{rdcnt}
+               , #{expsrYn}
+               , 'N'
+               , NOW()
+               , #{ctprvn}
+               , #{signgu}
+               , #{la}
+               , #{lo})
+    </insert>
+
+    <update id="Modify" parameterType="daygen.model.physical.ParmacyModel">
+        UPDATE ParmacyInfo
+        SET Zip       = #{zip},
+            Adres01   = #{adres01},
+            Adres02   = #{adres02},
+            ParmacyNm = #{parmacyNm},
+            Telno     = #{telno},
+            ExpsrYn   = #{expsrYn},
+            Ctprvn    = #{ctprvn},
+            Signgu    = #{signgu},
+            La        = #{la},
+            Lo        = #{lo}
+        WHERE ParmacyPid = ${parmacyPid}
+    </update>
+
+    <update id="Remove" parameterType="int">
+        UPDATE ParmacyInfo
+        SET DeleteYn = 'Y'
+        WHERE ParmacyPid = #{parmacyPid}
+    </update>
+
+    <select id="GetParmacy" resultType="daygen.model.physical.ParmacyModel" parameterType="daygen.model.physical.ParmacyModel">
+        SELECT *
+        FROM ParmacyInfo
+        WHERE ParmacyPid = ${parmacyPid}
+          AND DeleteYn = 'N'
+    </select>
+
+    <select id="GetParmacyListCount" resultType="int" parameterType="daygen.model.Logical.ParmacySearchModel">
+        SELECT COUNT(*)
+        FROM ParmacyInfo
+        WHERE DeleteYn = 'N'
+        <if test="expsrYn != null and expsrYn != ''">
+            AND ExpsrYn = #{expsrYn}
+        </if>
+        <if test="searchText != null and searchText != ''">
+            AND ParmacyNm LIKE CONCAT('%', #{searchText}, '%')
+        </if>
+        <if test="ctprvn != null and ctprvn != ''">
+            AND Ctprvn = #{ctprvn}
+        </if>
+        <if test="signgu != null and signgu != ''">
+            AND Signgu = #{signgu}
+        </if>
+    </select>
+
+    <select id="GetParmacyList" resultType="daygen.model.physical.ParmacyModel" parameterType="daygen.model.Logical.ParmacySearchModel">
+        SELECT @RowCount := @RowCount + 1 RowNum,
+        P.ParmacyPid,
+        P.Zip,
+        P.Ctprvn,
+        P.Signgu,
+        P.Adres01,
+        P.Adres02,
+        P.ParmacyNm,
+        P.Telno,
+        P.Rdcnt,
+        P.ExpsrYn,
+        P.DeleteYn,
+        P.CreatDt,
+        P.La,
+        P.Lo
+        FROM ParmacyInfo P, (SELECT @RowCount := ${offset}) temp
+        WHERE P.DeleteYn = 'N'
+        <if test="expsrYn != null and expsrYn != ''">
+            AND ExpsrYn = #{expsrYn}
+        </if>
+        <if test="searchText != null and searchText != ''">
+            AND ParmacyNm LIKE CONCAT('%', #{searchText}, '%')
+        </if>
+        <if test="ctprvn != null and ctprvn != ''">
+            AND Ctprvn = #{ctprvn}
+        </if>
+        <if test="signgu != null and signgu != ''">
+            AND Signgu = #{signgu}
+        </if>
+        ORDER BY P.CreatDt DESC
+        LIMIT ${offset}, ${limit}
+    </select>
+
+    <update id="AddRdcnt" parameterType="int">
+        UPDATE ParmacyInfo
+        SET Rdcnt = Rdcnt + 1
+        WHERE ParmacyPid = #{parmacyPid}
+          AND DeleteYn = 'N'
+    </update>
+
+    <select id="GetCtprvnList" resultType="daygen.model.Logical.ParmacySearchModel">
+        SELECT Ctprvn
+        FROM ParmacyInfo
+        GROUP BY Ctprvn
+    </select>
+
+    <select id="GetSignguList" resultType="daygen.model.Logical.ParmacySearchModel" parameterType="String">
+        SELECT Signgu
+        FROM ParmacyInfo
+        WHERE Ctprvn = #{ctprvn}
+        GROUP BY Signgu
+    </select>
+</mapper>

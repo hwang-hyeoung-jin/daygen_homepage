@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>GRINBISOFT</comment>
+	<!-- 로컬 환경 Context root Full Path -->
+	<entry key="context.root">https://www.daygen.co.kr</entry>
+	<entry key="global.startPage">/ko/default.do</entry>
+	<!-- grinbi.xml 설정 파일 경로 -->
+	<entry key="global.configPath">/config/grinbi.xml</entry>
+    <!-- grinbi.xml 설정 파일 경로 -->
+    <entry key="global.siteMapPath">/config/sitemap.xml</entry>
+    <!-- locale cookie name  -->
+    <entry key="global.localeCookieName">daygen_locale</entry>
+	<!-- 로그인 페이지 경로 -->
+	<entry key="global.loginPage">/admin/default.do</entry>
+	<entry key="global.logoutPage">/admin/logoutPage.do</entry>
+	<!-- 구간암호화 설정 -->
+	<entry key="global.useServerEncrypt">false</entry>
+	<!-- 빌드 모드 DEBUG or RELEASE -->
+	<entry key="global.buildMode">RELEASE</entry>
+
+    <!-- SSL 요청만 받는지 설정 -->
+    <entry key="global.sslOnly">false</entry>
+
+<!--	<entry key="global.sqlmapNamespace.logger">grinbi.Logger.</entry>-->
+<!--	<entry key="global.sqlmapNamespace.file">grinbi.File.</entry>-->
+<!--	<entry key="global.sqlmapNamespace.monitoring">grinbi.Monitoring.</entry>-->
+
+	<!-- Content Security Policy allowed (도메인별 한칸 띄우고)-->
+	<entry key="global.csp">default-src 'self' script-src self 'unsafe-inline' 'unsafe-eval' style-src self 'unsafe-inline' 'unsafe-eval' img-src * data:</entry>
+
+	<!-- 로그인 세션 이름 -->
+    <entry key="session.name">Daygen_User</entry>
+    <!-- 세션 타임아웃 (초) -->
+    <entry key="session.timeout">1200</entry>
+	<entry key="session.useSesseionListener">false</entry>
+
+	<!-- Files -->
+	<!-- 파일 업로드 경로 -->
+	<entry key="file.uploadPath">/uploadFiles</entry>
+	<!-- file.maxlength -->
+	<entry key="file.maxLength">1000000000</entry>
+	<!-- 섬네일 width, height -->
+    <entry key="file.thumbnailSize">175</entry>
+	<!-- Files -->
+
+	<!-- Exception 발생시 Action Url -->
+	<entry key="exception.ajax.url">/exception/error.do</entry>
+	<entry key="exception.url">/exception/error.do</entry>
+    <entry key="exception.hasNotPermissionException">/exception/error.do</entry>
+	<!-- Exception 발생시 Action Url -->
+
+	<!-- Database -->
+	<entry key="db.type">mysql</entry>
+	<entry key="db.driverClassName">com.mysql.jdbc.Driver</entry>
+	<entry key="db.url">jdbc:mysql://119.205.211.179:3306/venidaygendb?autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10</entry>
+	<entry key="db.userName">venidaygendb</entry>
+	<entry key="db.password">0401veniveni</entry>
+	<!-- Database -->
+
+	<!-- Mybatis -->
+	<entry key="mybatis.configLocation">classpath:config/mybatis-config.xml</entry>
+	<entry key="mybatis.mapperLocations">classpath:sqlmap/*.xml</entry>
+	<!-- Mybatis -->
+	
+	<!-- Kakao -->
+    <!-- 개발 -->
+<!--    <entry key="kakaoAPIKey">7befd8324f85de06da78e724e7a1bd72</entry>-->
+    <!-- 운영 -->
+    <entry key="kakaoAPIKey">202ced75c4e8e4a2987f723536bd36a3</entry>
+	<!-- Kakao -->
+
+</properties>

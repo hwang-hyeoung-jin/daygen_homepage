@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grinbi>
+    <authentication enabled="true">
+        <ignoreList>
+            <add name="/ko"/>
+            <add name="/en"/>
+            <add name="/common"/>
+            <add name="/file"/>
+            <add name="/frontbbs"/>
+            <add name="/frontparmacy"/>
+            <add name="/admin/default.do"/>
+            <add name="/admin/login.do"/>
+            <add name="/admin/logoutPage.do"/>
+        </ignoreList>
+    </authentication>
+    <resolver>
+        <tilesViewResolver enabled="true" order="1" viewName=".*" definitionPath="/WEB-INF/tiles/definition/def-*.xml" />
+        <urlBasedViewResolver enabled="true" order="2" suffix=".jsp" prefix="/WEB-INF/jsp/"/>
+        <freeMarkerViewResolver enabled="true" order="3" suffix=".flt" contentType="text/html; charset=UTF-8"/>
+    </resolver>
+</grinbi>

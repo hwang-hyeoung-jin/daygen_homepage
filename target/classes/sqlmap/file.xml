@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="common.file">
+
+    <insert id="Insert" parameterType="grinbi.common.model.FileModel">
+        INSERT INTO FileInfo
+        (RealName
+        ,VirtualName
+        ,ContentType
+        ,Category
+        ,Size
+        ,Height
+        ,Width)
+        VALUES
+        (#{RealName}
+        ,#{VirtualName}
+        ,#{ContentType}
+        ,#{Category}
+        ,#{Size}
+        ,#{Height}
+        ,#{Width})
+
+        <selectKey keyProperty="FilePid" resultType="int" order="AFTER">
+            SELECT MAX(FilePid) FROM FileInfo
+        </selectKey>
+    </insert>
+
+    <select id="GetList" resultType="grinbi.common.model.FileModel">
+        SELECT FilePid
+                ,RealName
+                ,VirtualName
+                ,ContentType
+                ,Category
+                ,Size
+                ,Height
+                ,Width
+        FROM FileInfo
+        WHERE FilePid in
+        <foreach collection="array" item="FilePid" index="index" open="(" close=")" separator=",">
+            #{FilePid}
+        </foreach>
+    </select>
+
+</mapper>

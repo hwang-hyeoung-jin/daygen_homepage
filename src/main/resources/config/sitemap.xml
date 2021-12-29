@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Site name="ROOT">
+    <Group name="ADMIN">
+        <Page name="KOR - NEWS 게시물 관리" url="/admin/index.do?pageid=b_01">
+            <SubPage url="/admin/index.do?pageid=b_02"></SubPage>
+        </Page>
+        <Page name="ENG - NEWS 게시물 관리" url="/admin/index.do?pageid=c_01">
+            <SubPage url="/admin/index.do?pageid=c_02"></SubPage>
+        </Page>
+        <Page name="KOR - 약국 등록" url="/admin/index.do?pageid=d_01">
+            <SubPage url="/admin/index.do?pageid=d_02"></SubPage>
+        </Page>
+        <Page name="로그아웃" url="/admin/logoutPage.do"></Page>
+    </Group>
+    <Group name="Front_ko">
+        <Page name="Main" url="/" gnbYn="N"></Page>
+        <Page name="Main" url="/ko/default.do" gnbYn="N"></Page>
+        <Page name="About us" url="/ko/index.do?pageid=a_01_01"></Page>
+        <Page name="Technology" url="/ko/index.do?pageid=b_01_01"></Page>
+        <Page name="Products" url="/ko/index.do?pageid=c_01_01"></Page>
+        <Page name="IR" url="/ko/index.do?pageid=d_01_01"></Page>
+        <Page name="News" url="/ko/index.do?pageid=e_01_01">
+            <SubPage url="/ko/index.do?pageid=e_01_02"></SubPage>
+        </Page>
+        <Page name="Contact us" url="/ko/index.do?pageid=f_01_01"></Page>
+        <Page name="제품구매하기" url="https://smartstore.naver.com/daygen">
+            <SubPage url="/ko/index.do?pageid=g_01_02"></SubPage>
+        </Page>
+    </Group>
+    <Group name="Front_en">
+        <Page name="Main" url="/en/default.do" gnbYn="N"></Page>
+        <Page name="About us" url="/en/index.do?pageid=a_01_01"></Page>
+        <Page name="Technology" url="/en/index.do?pageid=b_01_01"></Page>
+        <Page name="Products" url="/en/index.do?pageid=c_01_01"></Page>
+        <Page name="IR" url="/en/index.do?pageid=d_01_01"></Page>
+        <Page name="News" url="/en/index.do?pageid=e_01_01">
+            <SubPage url="/en/index.do?pageid=e_01_02"></SubPage>
+        </Page>
+        <Page name="Contact us" url="/en/index.do?pageid=f_01_01"></Page>
+    </Group>
+
+</Site>
