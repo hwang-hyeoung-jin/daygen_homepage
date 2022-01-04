@@ -96,7 +96,7 @@
                         <td class="todayPop01_top ">
                             <div>
                             	<a href="https://www.daynshop.com/" target="_blank">
-                                	<!-- <img src='<c:url value='/images/popup/landing_page.jpg'/>' alt="데이젠팝업" /> -->
+                                	<!-- <img src='<c:url value='/images/popup/landing_page.jpg'/>' alt="데이212312젠팝업" /> -->
                                 </a>
                             </div>
                         </td>
